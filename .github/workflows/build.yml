@@ -5,7 +5,8 @@ jobs:
   publish:
     name: ${{ matrix.runtime-id }}-${{ github.workflow }}-${{ matrix.os }}]
     env:
-      PROJECT_PATH: HelloWorld/HelloWorld.csproj
+      PROJECT_NAME: HelloWorld
+      PROJECT_PATH: ${PROJECT_NAME}/${PROJECT_NAME}.csproj
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -41,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hello
-          path: ./HelloWorld/out/${{ matrix.runtime-id }}/*
+          path: $PROJECT_NAME/out/${{ matrix.runtime-id }}/*
           retention-days: 3
   
   release:
