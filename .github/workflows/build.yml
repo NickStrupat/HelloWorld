@@ -16,8 +16,8 @@ jobs:
 
     steps:
       - run: |
-          echo "RUNNER_OS: $env:RUNNER_OS"
-          echo "RUNNER_ARCH: $env:RUNNER_ARCH"
+          echo "RUNNER_OS: $RUNNER_OS"
+          echo "RUNNER_ARCH: $RUNNER_ARCH"
         
 #      - uses: actions/checkout@v4
 #
