@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: HelloWorld-${{ matrix.runtime-id }}
-          path: HelloWorld/out/${{ matrix.runtime-id }}/*
+          path: ${{ github.workspace }}/HelloWorld/out/${{ matrix.runtime-id }}/*
           retention-days: 3
   
   release:
