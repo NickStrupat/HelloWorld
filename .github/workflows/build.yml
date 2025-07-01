@@ -3,7 +3,9 @@ on: [push, workflow_dispatch]
 
 jobs:
   publish:
-    name: ${{ matrix.runtime-id }}-${{ github.workflow }}-${{ matrix.os }}
+    name: ${{ matrix.runtime-id }}-${{ github.workflow }}-${{ matrix.os }}]
+    env:
+      PROJECT_PATH: HelloWorld/HelloWorld.csproj
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -32,7 +34,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - run: dotnet publish --self-contained -r ${{ matrix.runtime-id }} -o ../out/${{ matrix.runtime-id }}
+      - run: dotnet publish $PROJECT_PATH --self-contained -r ${{ matrix.runtime-id }} -o ../out/${{ matrix.runtime-id }}
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
         
       - uses: actions/upload-artifact@v4
         with:
