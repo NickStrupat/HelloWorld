@@ -32,12 +32,12 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - run: dotnet publish --self-contained -r ${{ matrix.runtime-id }}
+      - run: dotnet publish --self-contained -r ${{ matrix.runtime-id }} -o ../out/${{ matrix.runtime-id }}
         
       - uses: actions/upload-artifact@v4
         with:
           name: hello
-          path: ./HelloWorld/out/*
+          path: ./out/${{ matrix.runtime-id }}/*
           retention-days: 3
   
   release:
