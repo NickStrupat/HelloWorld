@@ -7,32 +7,31 @@ env:
 
 jobs:
   publish:
-    name: ${{ env.RID }}
-    env:
-      RID: ${{ matrix.os }}-${{ matrix.arch }}
-      RUNNER: ${{ env.RID == 'win-x64' && 'windows-latest' || env.RID == 'win-arm64' && 'windows-11-arm' || env.RID == 'osx-x64' && 'macos-latest' || env.RID == 'osx-arm64' && 'macos-latest' || env.RID == 'linux-x64' && 'ubuntu-22.04' || env.RID == 'linux-arm64' && 'ubuntu-22.04-arm' }}
-    runs-on: ${{ env.RUNNER }}
+    name: ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         # Until cross-platform native AOT compilation is supported, let's do the native AOT builds on runners that match the target runtime.
-        os: [win, osx, linux]
-        arch: [x64, arm64]
-#        include:
-#          - os: ubuntu-22.04
-#            runtime-id: linux-x64
-#          - os: ubuntu-22.04-arm
-#            runtime-id: linux-arm64
-#            
-#          - os: windows-latest
-#            runtime-id: win-x64
-#          - os: windows-11-arm
-#            runtime-id: win-arm64
-#            
-#          - os: macos-latest # macOS runners are arm64, but they can cross-compile for x64, so let's use it twice (once per `runtime-id`)
-#            runtime-id: osx-x64
-#          - os: macos-latest
-#            runtime-id: osx-arm64
+#        os: [win, macos, linux]
+#        arch: [x64, arm64]
+        include:
+          - os: ubuntu-22.04
+            runtime-id: linux-x64
+          - os: ubuntu-22.04-arm
+            runtime-id: linux-arm64
+            
+          - os: windows-latest
+            runtime-id: win-x64
+            artifact-extension: .exe
+          - os: windows-11-arm
+            runtime-id: win-arm64
+            artifact-extension: .exe
+            
+          - os: macos-latest # macOS runners are arm64, but they can cross-compile for x64, so let's use it twice (once per `runtime-id`)
+            runtime-id: osx-x64
+          - os: macos-latest
+            runtime-id: osx-arm64
 
     steps:
       - uses: actions/checkout@v4
@@ -42,12 +41,12 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Build and publish the native binary app
-        run: dotnet publish ${{ env.PROJECT_PATH }} --self-contained -r ${{ env.RID }} -o ./out/${{ env.RID }}
+        run: dotnet publish ${{ env.PROJECT_PATH }} --self-contained -r ${{ matrix.runtime-id }} -o ./out/${{ matrix.runtime-id }}
         
       - uses: actions/upload-artifact@v4
         with:
-          name: HelloWorld-${{ env.RID }}
-          path: ${{ github.workspace }}/out/${{ env.RID }}/*
+          name: HelloWorld-${{ matrix.runtime-id }}
+          path: ${{ github.workspace }}/out/${{ matrix.runtime-id }}/HelloWorld${{ matrix.artifact-extension || '' }}
           retention-days: 3
   
   release:
