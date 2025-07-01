@@ -15,27 +15,23 @@ jobs:
         ]
 
     steps:
-      - run: |
-          echo "RUNNER_OS: $RUNNER_OS"
-          echo "RUNNER_ARCH: $RUNNER_ARCH"
-          echo "runner.os: ${{ runner.os }}"
-          echo "runner.arch: ${{ runner.arch }}"
-        
-#      - uses: actions/checkout@v4
-#
-#      - uses: actions/setup-dotnet@v4
-#        with:
-#          dotnet-version: 9.0.x
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
           
-#      - env:
+      - env:
 #          OS: ${{ matrix.os == 'windows-latest' && 'win' || (matrix.os == 'macos-latest' && 'osx' || 'linux') }}
 #          OS: ${{ $env:RUNNER_OS == 'win32' && 'win' || (os.platform() == 'darwin' && 'osx' || 'linux') }}
-#      - run: |
-#          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.arch() }} -c Release -o out/x64
+          OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
+          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown')
+        run: |
+          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.ARCH }} -c Release -o out/x64
 
-      # The default mac runner is arm64, but it can cross=compile for x64 so let's do it as an extra step
-#      - if: os.platform() == 'darwin'
-#        run: dotnet publish HelloWorld/HelloWorld.csproj -r osx-x64 -c Release -o out/x64
+      # The default mac runner is arm64, but it can cross-compile for x64, so let's do it as an extra step
+      - if: runner.os == 'macOS'
+        run: dotnet publish HelloWorld/HelloWorld.csproj -r osx-x64 -c Release -o out/x64
   
   release:
     needs: publish
