@@ -6,7 +6,7 @@ jobs:
     name: ${{ matrix.runtime-id }}-${{ github.workflow }}-${{ matrix.os }}]
     env:
       PROJECT_NAME: HelloWorld
-      PROJECT_PATH: ${PROJECT_NAME}/${PROJECT_NAME}.csproj
+      PROJECT_PATH: $PROJECT_NAME/$PROJECT_NAME.csproj
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
