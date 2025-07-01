@@ -26,8 +26,7 @@ jobs:
 #          OS: ${{ $env:RUNNER_OS == 'win32' && 'win' || (os.platform() == 'darwin' && 'osx' || 'linux') }}
           OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
           ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown') }}
-        run: |
-          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.ARCH }} -c Release -o out/x64
+        run: dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ env.ARCH }} -c Release -o out/x64
 
       # The default mac runner is arm64, but it can cross-compile for x64, so let's do it as an extra step
       - if: runner.os == 'macOS'
