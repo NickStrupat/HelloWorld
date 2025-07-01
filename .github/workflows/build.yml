@@ -10,14 +10,7 @@ jobs:
     name: ${{ env.RID }}
     env:
       RID: ${{ matrix.os }}-${{ matrix.arch }}
-      RUNNER: ${{
-        env.RID == 'win-x64' && 'windows-latest' || \
-        env.RID == 'win-arm64' && 'windows-11-arm' || \
-        env.RID == 'osx-x64' && 'macos-latest' || \
-        env.RID == 'osx-arm64' && 'macos-latest' || \
-        env.RID == 'linux-x64' && 'ubuntu-22.04' || \
-        env.RID == 'linux-arm64' && 'ubuntu-22.04-arm'
-      }}
+      RUNNER: ${{ env.RID == 'win-x64' && 'windows-latest' || env.RID == 'win-arm64' && 'windows-11-arm' || env.RID == 'osx-x64' && 'macos-latest' || env.RID == 'osx-arm64' && 'macos-latest' || env.RID == 'linux-x64' && 'ubuntu-22.04' || env.RID == 'linux-arm64' && 'ubuntu-22.04-arm' }}
     runs-on: ${{ env.RUNNER }}
     strategy:
       fail-fast: false
