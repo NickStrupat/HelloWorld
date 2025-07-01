@@ -19,17 +19,17 @@ jobs:
           echo "RUNNER_OS: $env:RUNNER_OS"
           echo "RUNNER_ARCH: $env:RUNNER_ARCH"
         
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
+#      - uses: actions/checkout@v4
+#
+#      - uses: actions/setup-dotnet@v4
+#        with:
+#          dotnet-version: 9.0.x
           
 #      - env:
 #          OS: ${{ matrix.os == 'windows-latest' && 'win' || (matrix.os == 'macos-latest' && 'osx' || 'linux') }}
 #          OS: ${{ $env:RUNNER_OS == 'win32' && 'win' || (os.platform() == 'darwin' && 'osx' || 'linux') }}
-      - run: |
-          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.arch() }} -c Release -o out/x64
+#      - run: |
+#          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.arch() }} -c Release -o out/x64
 
       # The default mac runner is arm64, but it can cross=compile for x64 so let's do it as an extra step
 #      - if: os.platform() == 'darwin'
