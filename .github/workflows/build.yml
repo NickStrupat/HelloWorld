@@ -36,12 +36,12 @@ jobs:
 
       - run: dotnet publish $PROJECT_PATH --self-contained -r ${{ matrix.runtime-id }} -o ../out/${{ matrix.runtime-id }}
         env:
-          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+          DOTNET_NOLOGO: true # Suppress the first-time .NET welcome message, etc.
         
       - uses: actions/upload-artifact@v4
         with:
           name: hello
-          path: ./out/${{ matrix.runtime-id }}/*
+          path: ./HelloWorld/out/${{ matrix.runtime-id }}/*
           retention-days: 3
   
   release:
