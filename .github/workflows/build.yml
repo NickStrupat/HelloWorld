@@ -25,7 +25,7 @@ jobs:
 #          OS: ${{ matrix.os == 'windows-latest' && 'win' || (matrix.os == 'macos-latest' && 'osx' || 'linux') }}
 #          OS: ${{ $env:RUNNER_OS == 'win32' && 'win' || (os.platform() == 'darwin' && 'osx' || 'linux') }}
           OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
-          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown')
+          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown') }}
         run: |
           dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ os.ARCH }} -c Release -o out/x64
 
