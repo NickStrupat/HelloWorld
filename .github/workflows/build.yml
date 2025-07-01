@@ -7,14 +7,12 @@ env:
 
 jobs:
   publish:
-    name: ${{ matrix.os }}-${{ matrix.arch }}
+    name: ${{ matrix.runtime-id }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         # Until cross-platform native AOT compilation is supported, let's do the native AOT builds on runners that match the target runtime.
-#        os: [win, macos, linux]
-#        arch: [x64, arm64]
         include:
           - os: ubuntu-22.04
             runtime-id: linux-x64
@@ -49,12 +47,12 @@ jobs:
           path: ${{ github.workspace }}/out/${{ matrix.runtime-id }}/HelloWorld${{ matrix.artifact-extension || '' }}
           retention-days: 3
   
-  release:
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-      
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            out/*
+#  release:
+#    needs: publish
+#    runs-on: ubuntu-latest
+#    steps:
+#      
+#      - uses: softprops/action-gh-release@v2
+#        with:
+#          files: |
+#            out/*
