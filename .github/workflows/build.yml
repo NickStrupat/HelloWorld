@@ -35,8 +35,8 @@ jobs:
       - env:
           OS: ${{ matrix.os == 'windows-latest' && 'win' || (matrix.os == 'macos-latest' && 'osx' || 'linux') }}
         run: |
-          dotnet publish -r $OS-x64 -c Release -o out/x64
-          dotnet publish -r $OS-arm64 -c Release -o out/arm64
+          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-x64 -c Release -o out/x64
+          dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-arm64 -c Release -o out/arm64
   
   release:
     needs: publish
