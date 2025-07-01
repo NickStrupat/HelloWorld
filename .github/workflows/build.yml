@@ -1,10 +1,6 @@
 name: Build
 on: [push, workflow_dispatch]
 
-env:
-  PROJECT_NAME: HelloWorld
-  PROJECT_PATH: $PROJECT_NAME/$PROJECT_NAME.csproj
-
 jobs:
   publish:
     name: ${{ matrix.runtime-id }}-${{ github.workflow }}-${{ matrix.os }}]
@@ -36,14 +32,14 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - run: dotnet publish ${{ env.PROJECT_PATH }} --self-contained -r ${{ matrix.runtime-id }} -o ../out/${{ matrix.runtime-id }}
+      - run: dotnet publish HelloWorld/HelloWorld.csproj --self-contained -r ${{ matrix.runtime-id }} -o ./out/${{ matrix.runtime-id }}
         env:
           DOTNET_NOLOGO: true # Suppress the first-time .NET welcome message, etc.
         
       - uses: actions/upload-artifact@v4
         with:
-          name: hello
-          path: ${{ env.PROJECT_NAME }}/out/${{ matrix.runtime-id }}/*
+          name: HelloWorld-${{ matrix.runtime-id }}
+          path: HelloWorld/out/${{ matrix.runtime-id }}/*
           retention-days: 3
   
   release:
@@ -54,5 +50,4 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            out/x64/*
-            out/arm64/*
+            out/*
