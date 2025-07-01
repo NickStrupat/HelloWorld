@@ -39,7 +39,7 @@ jobs:
       - name: Build and publish the native binary app
         run: dotnet publish ${{ env.PROJECT_PATH }} \
                --self-contained \
-               -r ${{ matrix.runtime-id }}
+               -r ${{ matrix.runtime-id }} \
                -o ./out/${{ matrix.runtime-id }}
         
       - uses: actions/upload-artifact@v4
