@@ -18,6 +18,8 @@ jobs:
       - run: |
           echo "RUNNER_OS: $RUNNER_OS"
           echo "RUNNER_ARCH: $RUNNER_ARCH"
+          echo "runner.os: ${{ runner.os }}"
+          echo "runner.arch: ${{ runner.arch }}"
         
 #      - uses: actions/checkout@v4
 #
