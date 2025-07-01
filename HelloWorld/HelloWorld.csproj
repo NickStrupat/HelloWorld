@@ -9,7 +9,8 @@
         <InvariantGlobalization>true</InvariantGlobalization>
         <PublishSingleFile>true</PublishSingleFile>
         <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-        <PublishTrimmed>true</PublishTrimmed>
+        <StripSymbols>true</StripSymbols>
+        <PublishDir>out</PublishDir>
     </PropertyGroup>
 
 </Project>

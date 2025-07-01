@@ -8,11 +8,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [
-          ubuntu-22.04, ubuntu-22.04-arm,
-          windows-latest, windows-11-arm,
-          macos-latest
-        ]
+        # Until cross-platform publishing is supported, let's do the native AOT builds on a platform-specific basis.
+        include:
+          - os: ubuntu-22.04
+            runtime-id: linux-x64
+          - os: ubuntu-22.04-arm
+            runtime-id: linux-arm64
+            
+          - os: windows-latest
+            runtime-id: win-x64
+          - os: windows-11-arm
+            runtime-id: win-arm64
+            
+          - os: macos-latest
+            runtime-id: osx-x64
+          - os: macos-latest
+            runtime-id: osx-arm64
+#        os: [
+#          ubuntu-22.04, ubuntu-22.04-arm,
+#          windows-latest, windows-11-arm,
+#          macos-latest
+#        ]
 
     steps:
       - uses: actions/checkout@v4
@@ -21,28 +37,27 @@ jobs:
         with:
           dotnet-version: 9.0.x
           
-      - env:
-#          OS: ${{ matrix.os == 'windows-latest' && 'win' || (matrix.os == 'macos-latest' && 'osx' || 'linux') }}
-#          OS: ${{ $env:RUNNER_OS == 'win32' && 'win' || (os.platform() == 'darwin' && 'osx' || 'linux') }}
-          OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
-          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown') }}
-        run: dotnet publish HelloWorld/HelloWorld.csproj -r ${{ env.OS }}-${{ env.ARCH }} -c Release -o out/x64
+#      - env:
+#          OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
+#          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown') }}
+      - run: |
+          cd HelloWorld
+          dotnet publish --sc -r ${{ matrix.runtime-id }}
 
       # The default mac runner is arm64, but it can cross-compile for x64, so let's do it as an extra step
-      - if: runner.os == 'macOS'
-        run: dotnet publish HelloWorld/HelloWorld.csproj -r osx-x64 -c Release -o out/x64
+#      - if: runner.os == 'macOS'
+#        run: dotnet publish -r osx-x64 -c Release -o out/x64
+        
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: out
+          retention-days: 3
   
   release:
     needs: publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/upload-artifact@v4
-        with:
-          name: out
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: out
       
       - uses: softprops/action-gh-release@v2
         with:
