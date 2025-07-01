@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   publish:
-    name: ${{ matrix.os }}-${{ github.workflow }}
+    name: ${{ matrix.os }}-${{ github.workflow }}-${{ matrix.runtime-id }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -40,9 +40,7 @@ jobs:
 #      - env:
 #          OS: ${{ runner.os == 'Windows' && 'win' || (runner.os == 'macOS' && 'osx' || (runner.os == 'Linux' && 'linux' || 'unknown')) }}
 #          ARCH: ${{ runner.arch == 'X64' && 'x64' || (runner.arch == 'ARM64' && 'arm64' || 'unknown') }}
-      - run: |
-          cd HelloWorld
-          dotnet publish --sc -r ${{ matrix.runtime-id }}
+      - run: dotnet publish --sc -r ${{ matrix.runtime-id }}
 
       # The default mac runner is arm64, but it can cross-compile for x64, so let's do it as an extra step
 #      - if: runner.os == 'macOS'
