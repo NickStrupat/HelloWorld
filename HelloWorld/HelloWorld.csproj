@@ -10,7 +10,7 @@
         <PublishSingleFile>true</PublishSingleFile>
         <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
         <StripSymbols>true</StripSymbols>
-        <PublishDir>out</PublishDir>
+        <PublishDir>./out</PublishDir>
     </PropertyGroup>
 
 </Project>
