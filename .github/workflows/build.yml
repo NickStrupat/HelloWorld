@@ -40,4 +40,8 @@ jobs:
         with:
           name: out
       
-      - uses: softprops/
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            out/x64/*
+            out/arm64/*
