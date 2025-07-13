@@ -12,5 +12,9 @@
         <StripSymbols>true</StripSymbols>
 <!--        <PublishDir>./out</PublishDir>-->
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
+    </PropertyGroup>
 
 </Project>
