@@ -27,8 +27,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: HelloWorld-${{ matrix.runtime-id }}
-          path: ${{ github.workspace }}/out/${{ matrix.runtime-id }}/HelloWorld*
+          name: HelloWorld-${{ matrix.plat }}-${{ matrix.arch }}
+          path: ${{ github.workspace }}/out/${{ matrix.plat }}-${{ matrix.arch }}/HelloWorld*
           retention-days: 3
 
 #  release:
