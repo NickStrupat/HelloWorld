@@ -12,18 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Until cross-platform native AOT compilation is supported, let's do the native AOT builds on runners that match the target runtime.
-        include:
-          - runtime-id: linux-x64
-          - runtime-id: linux-arm64
-
-          - runtime-id: win-x64
-            artifact-extension: .exe
-          - runtime-id: win-arm64
-            artifact-extension: .exe
-
-          - runtime-id: osx-x64
-          - runtime-id: osx-arm64
+        plat: [linux, win, osx]
+        arch: [x64, arm64]
 
     steps:
       - uses: actions/checkout@v4
@@ -33,12 +23,12 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Build and publish the native binary app
-        run: dotnet publish ${{ env.PROJECT_PATH }} -p:PublishAot=false -p:PublishTrimmed=true --self-contained -r ${{ matrix.runtime-id }} -o ./out/${{ matrix.runtime-id }}
+        run: dotnet publish ${{ env.PROJECT_PATH }} -p:PublishAot=false -p:PublishTrimmed=true --self-contained -r ${{ matrix.plat }}-${{ matrix.arch }} -o ./out/${{ matrix.runtime-id }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: HelloWorld-${{ matrix.runtime-id }}
-          path: ${{ github.workspace }}/out/${{ matrix.runtime-id }}/HelloWorld${{ matrix.artifact-extension || '' }}
+          path: ${{ github.workspace }}/out/${{ matrix.runtime-id }}/HelloWorld*
           retention-days: 3
 
 #  release:
