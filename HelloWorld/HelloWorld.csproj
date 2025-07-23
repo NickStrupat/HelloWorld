@@ -15,6 +15,7 @@
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <DebugSymbols>False</DebugSymbols>
         <DebugType>None</DebugType>
+        <DSymUtilEnabled>False</DSymUtilEnabled>
     </PropertyGroup>
 
 </Project>
